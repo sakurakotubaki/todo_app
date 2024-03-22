@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/application/todo_api.dart';
 import 'package:todo_app/domain/todo.dart';
 
-class TodoAddView extends StatefulWidget {
-  const TodoAddView({super.key});
+class EditTodoView extends StatefulWidget {
+  const EditTodoView({super.key, required this.todo});
+
+  final Todo todo;
 
   @override
-  State<TodoAddView> createState() => _TodoAddViewState();
+  State<EditTodoView> createState() => _EditTodoViewState();
 }
 
-class _TodoAddViewState extends State<TodoAddView> {
+class _EditTodoViewState extends State<EditTodoView> {
   final _titleController = TextEditingController();
 
   // nullだったらエラーを出すgetter
@@ -44,7 +46,12 @@ class _TodoAddViewState extends State<TodoAddView> {
             ElevatedButton(
               onPressed: () async {
                 if (_title != null) {
-                  await todoAPI.addTodo(Todo(title: _title));
+                  final todoId = widget.todo.id;
+                  final todo = Todo(
+                    id: todoId,
+                    title: _title,
+                  );
+                  await todoAPI.editTodo(todo);
                   if (context.mounted) {
                     Navigator.of(context).pop();
                   }
@@ -56,7 +63,7 @@ class _TodoAddViewState extends State<TodoAddView> {
                   );
                 }
               },
-              child: const Text('追加'),
+              child: const Text('編集'),
             ),
           ],
         ),

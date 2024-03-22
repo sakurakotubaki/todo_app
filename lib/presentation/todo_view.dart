@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo_app/application/todo_api.dart';
 import 'package:todo_app/domain/todo.dart';
 import 'package:todo_app/presentation/add_todo_view.dart';
+import 'package:todo_app/presentation/edit_todo_view.dart';
 
 class TodoView extends StatelessWidget {
   const TodoView({super.key});
@@ -33,6 +34,13 @@ class TodoView extends StatelessWidget {
               itemBuilder: (context, index) {
                 final todo = todos[index];
                 return ListTile(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditTodoView(todo: todo),
+                      ),
+                    );
+                  },
                   title: Text(todo.title ?? ''),
                   trailing: IconButton(
                     icon: const Icon(Icons.delete, color: Colors.red),
